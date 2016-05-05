@@ -176,12 +176,20 @@
 	}
 	
 	function getString($choice, $array){
-		//put first element of $array at beginning of string
-		$string = $choice . "=" . array_shift($array);
-		foreach($array as $value){
-			$string = $string . " OR " . $choice . "=" . $value;
+		if($choice==""){
+			$string=array_shift($array);
+			foreach($array as $value){
+				$string= $string." OR ".$value;
+			}
+			return $string;
+		}else{
+			//put first element of $array at beginning of string
+			$string = $choice . "=" . array_shift($array);
+			foreach($array as $value){
+				$string = $string . " OR " . $choice . "=" . $value;
+			}
+			return $string;
 		}
-		return $string;
 	}
 ?>
 

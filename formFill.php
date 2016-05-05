@@ -15,7 +15,7 @@
 	$request = $_GET['request'];
 
 	if ($request == 'species' || $request == 'species_site') {
-		$sql = "SELECT option_id, option_name FROM options WHERE struc = 'mammal' OR struc = 'bird' OR struc='notinlist' OR struc='noanimal'";
+		$sql = "SELECT option_id, option_name FROM options WHERE struc = 'mammal' OR struc = 'bird' OR struc='notinlist' OR struc='noanimal' ORDER BY struc ASC";
 	} elseif ($request == 'trapper' || $request == 'trapper_site') {
 		$sql = "SELECT DISTINCT person_id AS option_id, person_id AS option_name FROM photo";
 	} elseif ($request == 'gender') {

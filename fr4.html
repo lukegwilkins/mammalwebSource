@@ -262,7 +262,7 @@
 			}
 			console.log(speciesCount, genderCount, ageCount);
 			if (speciesCount != genderCount || speciesCount != ageCount){
-				alert("You need to put the same number of values into each box");
+				alert("You need to put a species, gender and age for each animal");
 				return;
 			}
 			else if(speciesCount == 0){
@@ -272,7 +272,7 @@
 			else{
 				$confirm = confirm("Are you sure?");
 					//if OK is clicked:
-					if (confirm){
+					if ($confirm){
 						classificationArray['photo_id'] = photoArray[photoArrayIndex][0];
 						console.log(classificationArray['photo_id']);
 						$.get("scientistClassify.php", classificationArray, function(response){
