@@ -1,0 +1,908 @@
+<html>
+	<head>
+		<!-- Semantic-UI and JQuery Import -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.js"></script>
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">    
+	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.css"/>
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300italic,700' rel='stylesheet' type='text/css'>
+
+
+		<title>Scientist Dashboard</title>
+	</head>
+
+		<body style="background:Cornsilk;">
+
+        <nav class="navbar navbar-inverse">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span> 
+              </button>
+              <a class="navbar-brand" href="home.html"><img src="MammalWeb.png" height="35" width="130"> </img></a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+              <ul class="nav navbar-nav">
+                <li><a href="home.html"><img src="home.png" height="35" width="70"> </img></a></li>
+                <li class="dropdown">
+                  <a href="SciDash.php" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="Scifilter.png" height="35" width="70"> </img> <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="index.html">Filter for Scientists</a></li>
+                    <li class="active"><a href="carouselfilter.html">Carousel Filter for Scientists</a></li>
+                    <li><a href="SciDash.php">Data Hub</a></li>
+                    <li><a href="fr4.html">Unresolved Classification</a></li>
+                    <li><a href="classifyData.html">Scientist Classification settings</a></li>
+                  </ul>
+                <li><a href="user.html"><img src="user.png" height="35" width="70"> </img></a></li> </a></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <br>
+
+<div style="font-family: 'Open Sans Condensed', serif;">
+		<div class="ui center aligned grid">
+			<div class="row">
+				<div class="column">
+					<p style="font-family: 'Open Sans Condensed', serif;"><font size="5">Carousel Filter</font></p>
+				</div>
+			</div>
+		</div>
+		
+		<!-- grid that contains buttons to determine how to filter for images -->
+		<div class="ui center aligned grid">
+			<div class="row"></div>
+			<div class="row">
+				<div class="column">
+					<p style="font-family: 'Open Sans Condensed', serif;"><font size="4">Filter for Images</font></p>
+				</div>
+			</div>
+			<div class="row">
+					<button class="ui toggle button" id="speciesButton">Species</button>
+					<button class="ui toggle button" id="trapperButton">Trapper</button>
+					<button class="ui toggle button" id="genderButton">Gender</button>
+					<button class="ui toggle button" id="ageButton">Age</button>
+					<button class="ui toggle button" id="time_periodButton">Time Period</button>
+			</div>
+			<div class="row">
+					<button class="ui toggle button" id="siteButton">Site</button>
+					<button class="ui toggle button" id="image_sequence_numberButton">Image Sequence Number</button>
+					<button class="ui toggle button" id="habitatButton">Habitat Type</button>
+					<button class="ui toggle button" id="human_presentButton">Human Present</button>
+			</div>
+			<div class="row">
+					<button class="ui toggle button" id="animal_presentButton">Animal Present</button>
+					<button class="ui toggle button" id="number_of_classificationsButton">Number of Classifications</button>
+					<button class="ui toggle button" id="decided_or_unresolvableButton">Decided or Unresolvable</button>
+				</div>
+			</div>	
+		</div>
+
+		<!--
+			TODO!
+			stop the gender filling bare times
+			Make dropdowns multiples
+		-->
+
+		<!-- grid that contains (initially invisible) drop down menus to filter for images -->
+		<div class="ui center aligned grid">
+			<div class="six wide column"></div>
+			<div class="four wide column">
+				<form class="ui form" id="filterImageForm" action="http://localhost/mammalwebDemo/querycarousel.php">
+					
+					<br>
+
+					<div class="field" id="species" style="display: none;">
+						<label>Species:</label>
+						<select class="ui dropdown multiple" name="species" id="speciesSelect">
+							<option></option>
+						</select>
+					</div>
+
+					<div class="field" id="trapper" style="display: none;">
+						<label>Trapper:</label>
+						<select class="ui dropdown multiple" name="trapper" id="trapperSelect">
+							<option></option>
+						</select>
+					</div>
+
+					<div class="field" id="gender" style="display: none;">
+						<label>Gender:</label><select  class="ui dropdown multiple" name="gender" id="genderSelect">
+							<option></option>
+						</select>
+					</div>
+
+					<div class="field" id="age" style="display: none;">
+						<label>Age:</label><select class="ui dropdown multiple" name="age" id="ageSelect">
+							<option></option>
+						</select>
+					</div>
+
+					<div id="time_period" style="display: none;">
+						<br/><div class="ui container segment">
+							<div class="field">
+								<label>Time Period Start:</label>
+								<div class="fields">
+									<div class="three wide field">
+										<select class="ui dropdown" name="time_period_start_day" id="time_period_start_daySelect">
+											<option></option> <!-- this needs to be the first option so that the get variable is empty if
+											nothing is selected -->
+											<option>Day</option>
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+											<option value="5">5</option>
+											<option value="6">6</option>
+											<option value="7">7</option>
+											<option value="8">8</option>
+											<option value="9">9</option>
+											<option value="10">10</option>
+											<option value="11">11</option>
+											<option value="12">12</option>
+											<option value="13">13</option>
+											<option value="14">14</option>
+											<option value="15">15</option>
+											<option value="16">16</option>
+											<option value="17">17</option>
+											<option value="18">18</option>
+											<option value="19">19</option>
+											<option value="20">20</option>
+											<option value="21">21</option>
+											<option value="22">22</option>
+											<option value="23">23</option>
+											<option value="24">24</option>
+											<option value="25">25</option>
+											<option value="26">26</option>
+											<option value="27">27</option>
+											<option value="28">28</option>
+											<option value="29">29</option>
+											<option value="30">30</option>
+											<option value="31">31</option>
+										</select>
+									</div>
+									<div class="three wide field">
+										<select class="ui dropdown" name="time_period_start_month" id="time_period_start_monthSelect">
+											<option></option>
+											<option>Month</option>
+											<option value="1">Jan</option>
+											<option value="2">Feb</option>
+											<option value="3">Mar</option>
+											<option value="4">Apr</option>
+											<option value="5">May</option>
+											<option value="6">Jun</option>
+											<option value="7">Jul</option>
+											<option value="8">Aug</option>
+											<option value="9">Sep</option>
+											<option value="10">Oct</option>
+											<option value="11">Nov</option>
+											<option value="12">Dec</option>
+										</select>
+									</div>
+									<div class="three wide field">
+										<select class="ui dropdown" name="time_period_start_year" id="time_period_start_yearSelect">
+											<option></option>
+											<option>Year</option>
+											<option value="2013">2013</option>
+											<option value="2014">2014</option>
+											<option value="2015">2015</option>
+											<option value="2016">2016</option>
+										</select>
+									</div>
+									<div class="two wide field">
+										<select class="ui dropdown" name="time_period_start_hour" id="time_period_start_hourSelect">
+											<option></option>
+											<option>Hr</option>
+											<option value="0">00</option>
+											<option value="1">01</option>
+											<option value="2">02</option>
+											<option value="3">03</option>
+											<option value="4">04</option>
+											<option value="5">05</option>
+											<option value="6">06</option>
+											<option value="7">07</option>
+											<option value="8">08</option>
+											<option value="9">09</option>
+											<option value="10">10</option>
+											<option value="11">11</option>
+											<option value="12">12</option>
+											<option value="13">13</option>
+											<option value="14">14</option>
+											<option value="15">15</option>
+											<option value="16">16</option>
+											<option value="17">17</option>
+											<option value="18">18</option>
+											<option value="19">19</option>
+											<option value="20">20</option>
+											<option value="21">21</option>
+											<option value="22">22</option>
+											<option value="23">23</option>
+										</select>
+									</div>
+									<div class="three wide field">
+										<select class="ui dropdown" name="time_period_start_minute" id="time_period_start_minuteSelect">
+											<option></option>
+											<option>Min</option>
+											<option value="0">00</option>
+											<option value="1">01</option>
+											<option value="2">02</option>
+											<option value="3">03</option>
+											<option value="4">04</option>
+											<option value="5">05</option>
+											<option value="6">06</option>
+											<option value="7">07</option>
+											<option value="8">08</option>
+											<option value="9">09</option>
+											<option value="10">10</option>
+											<option value="11">11</option>
+											<option value="12">12</option>
+											<option value="13">13</option>
+											<option value="14">14</option>
+											<option value="15">15</option>
+											<option value="16">16</option>
+											<option value="17">17</option>
+											<option value="18">18</option>
+											<option value="19">19</option>
+											<option value="20">20</option>
+											<option value="21">21</option>
+											<option value="22">22</option>
+											<option value="23">23</option>
+											<option value="24">24</option>
+											<option value="25">25</option>
+											<option value="26">26</option>
+											<option value="27">27</option>
+											<option value="28">28</option>
+											<option value="29">29</option>
+											<option value="30">30</option>
+											<option value="31">31</option>
+											<option value="32">32</option>
+											<option value="33">33</option>
+											<option value="34">34</option>
+											<option value="35">35</option>
+											<option value="36">36</option>
+											<option value="37">37</option>
+											<option value="38">38</option>
+											<option value="39">39</option>
+											<option value="40">40</option>
+											<option value="41">41</option>
+											<option value="42">42</option>
+											<option value="43">43</option>
+											<option value="44">44</option>
+											<option value="45">45</option>
+											<option value="46">46</option>
+											<option value="47">47</option>
+											<option value="48">48</option>
+											<option value="49">49</option>
+											<option value="50">50</option>
+											<option value="51">51</option>
+											<option value="52">52</option>
+											<option value="53">53</option>
+											<option value="54">54</option>
+											<option value="55">55</option>
+											<option value="56">56</option>
+											<option value="57">57</option>
+											<option value="58">58</option>
+											<option value="59">59</option>
+										</select>
+									</div>
+									<div class="two wide field">
+										<select class="ui dropdown" name="time_period_start_second" id="time_period_start_secondSelect">
+											<option></option>
+											<option>Sec</option>
+											<option value="0">00</option>
+											<option value="1">01</option>
+											<option value="2">02</option>
+											<option value="3">03</option>
+											<option value="4">04</option>
+											<option value="5">05</option>
+											<option value="6">06</option>
+											<option value="7">07</option>
+											<option value="8">08</option>
+											<option value="9">09</option>
+											<option value="10">10</option>
+											<option value="11">11</option>
+											<option value="12">12</option>
+											<option value="13">13</option>
+											<option value="14">14</option>
+											<option value="15">15</option>
+											<option value="16">16</option>
+											<option value="17">17</option>
+											<option value="18">18</option>
+											<option value="19">19</option>
+											<option value="20">20</option>
+											<option value="21">21</option>
+											<option value="22">22</option>
+											<option value="23">23</option>
+											<option value="24">24</option>
+											<option value="25">25</option>
+											<option value="26">26</option>
+											<option value="27">27</option>
+											<option value="28">28</option>
+											<option value="29">29</option>
+											<option value="30">30</option>
+											<option value="31">31</option>
+											<option value="32">32</option>
+											<option value="33">33</option>
+											<option value="34">34</option>
+											<option value="35">35</option>
+											<option value="36">36</option>
+											<option value="37">37</option>
+											<option value="38">38</option>
+											<option value="39">39</option>
+											<option value="40">40</option>
+											<option value="41">41</option>
+											<option value="42">42</option>
+											<option value="43">43</option>
+											<option value="44">44</option>
+											<option value="45">45</option>
+											<option value="46">46</option>
+											<option value="47">47</option>
+											<option value="48">48</option>
+											<option value="49">49</option>
+											<option value="50">50</option>
+											<option value="51">51</option>
+											<option value="52">52</option>
+											<option value="53">53</option>
+											<option value="54">54</option>
+											<option value="55">55</option>
+											<option value="56">56</option>
+											<option value="57">57</option>
+											<option value="58">58</option>
+											<option value="59">59</option>
+										</select>
+									</div>
+								</div>
+
+								<label>Time Period End:</label>
+								<div class="fields">
+									<div class="three wide field">
+										<select class="ui dropdown" name="time_period_end_day" id="time_period_end_daySelect">
+											<option></option>
+											<option>Day</option>
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+											<option value="5">5</option>
+											<option value="6">6</option>
+											<option value="7">7</option>
+											<option value="8">8</option>
+											<option value="9">9</option>
+											<option value="10">10</option>
+											<option value="11">11</option>
+											<option value="12">12</option>
+											<option value="13">13</option>
+											<option value="14">14</option>
+											<option value="15">15</option>
+											<option value="16">16</option>
+											<option value="17">17</option>
+											<option value="18">18</option>
+											<option value="19">19</option>
+											<option value="20">20</option>
+											<option value="21">21</option>
+											<option value="22">22</option>
+											<option value="23">23</option>
+											<option value="24">24</option>
+											<option value="25">25</option>
+											<option value="26">26</option>
+											<option value="27">27</option>
+											<option value="28">28</option>
+											<option value="29">29</option>
+											<option value="30">30</option>
+											<option value="31">31</option>
+										</select>
+									</div>
+									<div class="three wide field">
+										<select class="ui dropdown" name="time_period_end_month" id="time_period_end_monthSelect">
+											<option></option>
+											<option>Month</option>
+											<option value="1">Jan</option>
+											<option value="2">Feb</option>
+											<option value="3">Mar</option>
+											<option value="4">Apr</option>
+											<option value="5">May</option>
+											<option value="6">Jun</option>
+											<option value="7">Jul</option>
+											<option value="8">Aug</option>
+											<option value="9">Sep</option>
+											<option value="10">Oct</option>
+											<option value="11">Nov</option>
+											<option value="12">Dec</option>
+										</select>
+									</div>
+									<div class="three wide field">
+										<select class="ui dropdown" name="time_period_end_year" id="time_period_end_yearSelect">
+											<option></option>
+											<option>Year</option>
+											<option value="2013">2013</option>
+											<option value="2014">2014</option>
+											<option value="2015">2015</option>
+											<option value="2016">2016</option>
+										</select>
+									</div>
+									<div class="two wide field">
+										<select class="ui dropdown" name="time_period_end_hour" id="time_period_end_hourSelect">
+											<option></option>
+											<option>Hr</option>
+											<option value="0">00</option>
+											<option value="1">01</option>
+											<option value="2">02</option>
+											<option value="3">03</option>
+											<option value="4">04</option>
+											<option value="5">05</option>
+											<option value="6">06</option>
+											<option value="7">07</option>
+											<option value="8">08</option>
+											<option value="9">09</option>
+											<option value="10">10</option>
+											<option value="11">11</option>
+											<option value="12">12</option>
+											<option value="13">13</option>
+											<option value="14">14</option>
+											<option value="15">15</option>
+											<option value="16">16</option>
+											<option value="17">17</option>
+											<option value="18">18</option>
+											<option value="19">19</option>
+											<option value="20">20</option>
+											<option value="21">21</option>
+											<option value="22">22</option>
+											<option value="23">23</option>
+										</select>
+									</div>
+									<div class="three wide field">
+										<select class="ui dropdown" name="time_period_end_minute" id="time_period_end_minuteSelect">
+											<option></option>
+											<option>Min</option>
+											<option value="0">00</option>
+											<option value="1">01</option>
+											<option value="2">02</option>
+											<option value="3">03</option>
+											<option value="4">04</option>
+											<option value="5">05</option>
+											<option value="6">06</option>
+											<option value="7">07</option>
+											<option value="8">08</option>
+											<option value="9">09</option>
+											<option value="10">10</option>
+											<option value="11">11</option>
+											<option value="12">12</option>
+											<option value="13">13</option>
+											<option value="14">14</option>
+											<option value="15">15</option>
+											<option value="16">16</option>
+											<option value="17">17</option>
+											<option value="18">18</option>
+											<option value="19">19</option>
+											<option value="20">20</option>
+											<option value="21">21</option>
+											<option value="22">22</option>
+											<option value="23">23</option>
+											<option value="24">24</option>
+											<option value="25">25</option>
+											<option value="26">26</option>
+											<option value="27">27</option>
+											<option value="28">28</option>
+											<option value="29">29</option>
+											<option value="30">30</option>
+											<option value="31">31</option>
+											<option value="32">32</option>
+											<option value="33">33</option>
+											<option value="34">34</option>
+											<option value="35">35</option>
+											<option value="36">36</option>
+											<option value="37">37</option>
+											<option value="38">38</option>
+											<option value="39">39</option>
+											<option value="40">40</option>
+											<option value="41">41</option>
+											<option value="42">42</option>
+											<option value="43">43</option>
+											<option value="44">44</option>
+											<option value="45">45</option>
+											<option value="46">46</option>
+											<option value="47">47</option>
+											<option value="48">48</option>
+											<option value="49">49</option>
+											<option value="50">50</option>
+											<option value="51">51</option>
+											<option value="52">52</option>
+											<option value="53">53</option>
+											<option value="54">54</option>
+											<option value="55">55</option>
+											<option value="56">56</option>
+											<option value="57">57</option>
+											<option value="58">58</option>
+											<option value="59">59</option>
+										</select>
+									</div>
+									<div class="two wide field">
+										<select class="ui dropdown" name="time_period_end_second" id="time_period_end_secondSelect">
+											<option></option>
+											<option>Sec</option>
+											<option value="0">00</option>
+											<option value="1">01</option>
+											<option value="2">02</option>
+											<option value="3">03</option>
+											<option value="4">04</option>
+											<option value="5">05</option>
+											<option value="6">06</option>
+											<option value="7">07</option>
+											<option value="8">08</option>
+											<option value="9">09</option>
+											<option value="10">10</option>
+											<option value="11">11</option>
+											<option value="12">12</option>
+											<option value="13">13</option>
+											<option value="14">14</option>
+											<option value="15">15</option>
+											<option value="16">16</option>
+											<option value="17">17</option>
+											<option value="18">18</option>
+											<option value="19">19</option>
+											<option value="20">20</option>
+											<option value="21">21</option>
+											<option value="22">22</option>
+											<option value="23">23</option>
+											<option value="24">24</option>
+											<option value="25">25</option>
+											<option value="26">26</option>
+											<option value="27">27</option>
+											<option value="28">28</option>
+											<option value="29">29</option>
+											<option value="30">30</option>
+											<option value="31">31</option>
+											<option value="32">32</option>
+											<option value="33">33</option>
+											<option value="34">34</option>
+											<option value="35">35</option>
+											<option value="36">36</option>
+											<option value="37">37</option>
+											<option value="38">38</option>
+											<option value="39">39</option>
+											<option value="40">40</option>
+											<option value="41">41</option>
+											<option value="42">42</option>
+											<option value="43">43</option>
+											<option value="44">44</option>
+											<option value="45">45</option>
+											<option value="46">46</option>
+											<option value="47">47</option>
+											<option value="48">48</option>
+											<option value="49">49</option>
+											<option value="50">50</option>
+											<option value="51">51</option>
+											<option value="52">52</option>
+											<option value="53">53</option>
+											<option value="54">54</option>
+											<option value="55">55</option>
+											<option value="56">56</option>
+											<option value="57">57</option>
+											<option value="58">58</option>
+											<option value="59">59</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div><br/>
+					</div>
+
+					<div class="field" id="site" style="display: none;">
+						<label>Site:</label><select class="ui dropdown multiple" name="site" id="siteSelect">
+							<option></option>
+						</select>
+					</div>
+
+					<div class="field" id="image_sequence_number" style="display: none;">
+						<label>Image Sequence Number:</label><input type="text" name="image_sequence_number" id="image_sequence_numberText">
+					</div>
+					
+					<div class="field" id="habitat" style="display: none;">
+						<label>Habitat Type:</label><select class="ui dropdown multiple" name="habitat" id="habitatSelect">
+							<option></option>
+						</select>
+					</div>
+
+					<div class="field" id="human_present" style="display: none;">
+						<label>Human Present:</label><select class="ui dropdown multiple" name="human_present" id="human_presentSelect">
+							<option></option>
+							<option value="true">True</option>
+							<option value="false">False</option>
+						</select>
+					</div>
+
+					<div class="field" id="animal_present" style="display: none;">
+						<label>Animal Present:</label><select class="ui dropdown multiple" name="animal_present" id="animal_presentSelect">
+							<option></option>
+							<option value="true">True</option>
+							<option value="false">False</option>
+						</select>
+					</div>
+
+					<div class="field" id="number_of_classifications" style="display: none;">
+						<label>Number of Classifications:</label><input type="text" name="number_of_classifications" id="number_of_classificationsText">
+					</div>
+
+					<div class="field" id="decided_or_unresolvable" style="display: none;">
+						<label>Decided or Unresolvable:</label><select class="ui dropdown multiple" name="decided_or_unresolvable" id="decided_or_unresolvableSelect">
+							<option></option>
+							<option value="classified">Classified</option>
+							<option value="unresolvable">Unresolvable</option>
+						</select>
+					</div>
+					
+					<!-- invisible selection to pass a get variable so that the php script identifies the submission to be for filtering images -->
+					<select name="filterImages" style="display:none">
+						<option value="">
+					</select>
+					
+					<input type="submit" class="ui primary button">
+
+				</form>	
+
+			</div>
+			<div class="six wide column"></div>
+		</div>
+
+		<script type="text/javascript">
+			
+			// don't cache get request responses
+			$.ajaxSetup({ cache : false });
+
+			// setup semantic ui elements
+
+			$('.ui.button.toggle').state();
+			
+			$('#parametersSelectImage').dropdown();
+			$('#parametersSelectSite').dropdown();
+
+			$('#speciesButton').click(function() {
+
+				$('#speciesSelect').val('');
+
+				if ($('#speciesSelect').children('option').length == 1){
+					$('#speciesSelect').dropdown();
+					populateSelect('species');
+				}
+
+				$('#species').toggle();
+			});
+
+			$('#trapperButton').click(function() {
+
+				$('#trapperSelect').val('');
+
+				if ($('#trapperSelect').children('option').length == 1){
+					$('#trapperSelect').dropdown();
+					populateSelect('trapper');
+				}
+
+				$('#trapper').toggle();
+			});
+
+			$('#genderButton').click(function() {
+
+				$('#genderSelect').val('');
+
+				if ($('#genderSelect').children('option').length == 1){
+					$('#genderSelect').dropdown();
+					populateSelect('gender');
+				}
+
+				$('#gender').toggle();
+			});
+
+			$('#ageButton').click(function() {
+
+				$('#ageSelect').val('');
+
+				if ($('#ageSelect').children('option').length == 1){
+					$('#ageSelect').dropdown();
+					populateSelect('age');
+				}
+
+				$('#age').toggle();
+			});
+
+
+			$('#time_periodButton').click(function() {
+				$('#time_period_start_daySelect').val('');
+				$('#time_period_start_monthSelect').val('');
+				$('#time_period_start_yearSelect').val('');
+				$('#time_period_start_hourSelect').val('');
+				$('#time_period_start_minuteSelect').val('');
+				$('#time_period_start_secondSelect').val('');
+
+				$('#time_period_end_daySelect').val('');
+				$('#time_period_end_monthSelect').val('');
+				$('#time_period_end_yearSelect').val('');
+				$('#time_period_end_hourSelect').val('');
+				$('#time_period_end_minuteSelect').val('');
+				$('#time_period_end_secondSelect').val('');
+
+				$('#time_period').toggle();
+			});
+
+			$('#siteButton').click(function() {
+
+				$('#siteSelect').val('');
+
+				if ($('#siteSelect').children('option').length == 1){
+					$('#siteSelect').dropdown();
+					populateSelect('site');
+				}
+
+				$('#site').toggle();
+			});
+
+			$('#image_sequence_numberButton').click(function() {
+				$('#image_sequence_numberText').val('');
+				$('#image_sequence_number').toggle();
+			});
+			
+			$('#habitatButton').click(function() {
+
+				$('#habitatSelect').val('');
+
+				if ($('#habitatSelect').children('option').length == 1){
+					$('#habitatSelect').dropdown();
+					populateSelect('habitat');
+				}
+
+				$('#habitat').toggle();
+			});
+
+			$('#human_presentSelect').dropdown();
+			$('#human_presentButton').click(function() {
+				$('#human_presentSelect').val('');
+				$('#human_present').toggle();
+			});
+
+			$('#animal_presentSelect').dropdown();
+			$('#animal_presentButton').click(function() {
+				$('#animal_presentSelect').val('');
+				$('#animal_present').toggle();
+			});
+
+			$('#number_of_classificationsButton').click(function() {
+				$('#number_of_classificationsText').val('');
+				$('#number_of_classifications').toggle();
+			});
+
+			$('#decided_or_unresolvableSelect').dropdown();
+			$('#decided_or_unresolvableButton').click(function() {
+				$('#decided_or_unresolvableSelect').val('');
+				$('#decided_or_unresolvable').toggle();
+			});
+
+			$('#areaButton').click(function() {
+
+				$('#areaSelect').val('');
+
+				if ($('#areaSelect').children('option').length == 1){
+					$('#areaSelect').dropdown();
+					populateSelect('area');
+				}
+
+				$('#area').toggle();
+			});
+			
+			$('#trapperSiteButton').click(function() {
+
+				$('#trapper_siteSelect').val('');
+
+				if ($('#trapper_siteSelect').children('option').length == 1){
+					$('#trapper_siteSelect').dropdown();
+					populateSelect('trapper_site');
+				}
+
+				$('#trapper_site').toggle();
+			});
+			
+			$('#time_periodSiteButton').click(function() {
+				$('#time_period_start_day_siteSelect').val('');
+				$('#time_period_start_month_siteSelect').val('');
+				$('#time_period_start_year_siteSelect').val('');
+				$('#time_period_start_hour_siteSelect').val('');
+				$('#time_period_start_minute_siteSelect').val('');
+				$('#time_period_start_second_siteSelect').val('');
+
+				$('#time_period_end_day_siteSelect').val('');
+				$('#time_period_end_month_siteSelect').val('');
+				$('#time_period_end_year_siteSelect').val('');
+				$('#time_period_end_hour_siteSelect').val('');
+				$('#time_period_end_minute_siteSelect').val('');
+				$('#time_period_end_second_siteSelect').val('');
+
+				$('#time_period_site').toggle();
+			});
+			
+			$('#speciesSiteButton').click(function() {
+
+				$('#species_siteSelect').val('');
+
+				if ($('#species_siteSelect').children('option').length == 1){
+					$('#species_siteSelect').dropdown();
+					populateSelect('species_site');
+				}
+
+				$('#species_site').toggle();
+			});
+			
+			$('#number_of_photosButton').click(function() {
+				$('#number_of_photosText').val('');
+				$('#number_of_photos').toggle();
+			});
+			
+			$('#number_of_seqencesButton').click(function() {
+				$('#number_of_sequencesText').val('');
+				$('#number_of_sequences').toggle();
+			});
+			
+			$('#habitat_siteButton').click(function() {
+
+				$('#habitat_siteSelect').val('');
+
+				if ($('#habitat_siteSelect').children('option').length == 1){
+					$('#habitat_siteSelect').dropdown();
+					populateSelect('habitat_site');
+				}
+
+				$('#habitat_site').toggle();
+			});
+			
+			$('#human_present_siteSelect').dropdown();
+			$('#human_present_siteButton').click(function() {
+				$('#human_present_siteSelect').val('');
+				$('#human_present_site').toggle();
+			});
+
+			// stores filters that have been selected in multi-dropdown
+			var selectedFilters = new Array();
+
+			/**
+			 *	Populate a 'select' element in the filters form with relevant values
+			 *	@param selectName - the name of the select element to be filled
+			 */
+			function populateSelect(selectName){
+
+				// don't cache get request responses
+				$.ajaxSetup({ cache : false });
+
+				// form get request
+				var data = "request="+selectName;
+
+				// send get request to formFill.php which interacts with db
+				$.getJSON("http://localhost/mammalwebDemo/formFill.php", data, function(response){
+
+					// select the select element
+					var select = document.getElementById(selectName+'Select');
+
+					// for each response from db, create new option for select and add the option to the select box
+					for (var i = 0; i < response.length; i++) {
+						var opt = document.createElement('option');
+
+						if (selectName == 'trapper' || selectName == 'trapper_site') {
+							opt.innerHTML = response[i].option_id;
+							opt.value = response[i].option_id;
+						} else {
+							opt.innerHTML = response[i].option_id + ' - ' + response[i].option_name;
+							opt.value = response[i].option_id;
+						}
+
+						select.appendChild(opt);
+					}
+				});
+			}
+
+		</script>
+
+	</body>
+</html>

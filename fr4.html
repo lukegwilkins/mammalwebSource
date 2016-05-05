@@ -1,0 +1,288 @@
+<html>
+	<head>
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.js"></script>	    
+	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.css"/>
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300italic,700' rel='stylesheet' type='text/css'>
+
+        <nav class="navbar navbar-inverse">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span> 
+              </button>
+              <a class="navbar-brand" href="home.html"><img src="MammalWeb.png" height="35" width="130"> </img></a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+              <ul class="nav navbar-nav">
+                <li><a href="home.html"><img src="home.png" height="35" width="70"> </img></a></li>
+                <li class="dropdown">
+                  <a href="SciDash.php" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="Scifilter.png" height="35" width="70"> </img> <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="index.html">Filter for Scientists</a></li>
+                    <li><a href="carouselfilter.html">Carousel Filter for Scientists</a></li>
+                    <li><a href="SciDash.php">Data Hub</a></li>
+                    <li class="active"><a href="fr4.html">Unresolved Classification</a></li>
+                    <li><a href="classifyData.html">Scientist Classification settings</a></li>
+                  </ul>
+                <li><a href="user.html"><img src="user.png" height="35" width="70"> </img></a></li> </a></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <br>
+
+	</head>
+	
+	<body style="background:Cornsilk;">
+	<br>
+<div style="font-family: 'Open Sans Condensed', serif;">
+	<p><font size="5">
+		<center>
+			Mammalweb backend classification page
+		</center>
+	</font></p>
+</div>
+<br>
+	
+	<body>
+<div style="font-family: 'Open Sans Condensed', serif;">
+    <div class="container">
+        <div class="row">
+        <div class="col-md-12" align="center">
+		<div id='imageDiv'>
+		</div>
+		<br>
+		
+		<button type='button' class="ui button" id='nextPhoto'>Next photo</button>
+		
+		<br>
+		<br>
+		<select class="ui dropdown" id="species">
+			<option value="">Species</option>
+		</select>
+		
+		<button type='button' class="ui button" id='speciesAddClassifcication'>Add Classification</button>
+		
+		<br>
+		<div id='speciesClassificationOutput'>
+		</div>
+		
+		<br>
+		<br>
+		<select class="ui dropdown" id="gender">
+			<option value="">Gender</option>
+		</select>
+		
+		<button type='button' class="ui button" id='genderAddClassification'>Add Classification</button>
+		
+		<br>
+		<div id='genderClassificationOutput'>
+		</div>
+		
+		<br>
+		<br>
+		<select class="ui dropdown" id="age">
+			<option value="">Age</option>
+		</select>
+		
+		<button type='button' class="ui button" id='ageAddClassification'>Add Classification</button>
+		
+		<br>
+		<div id='ageClassificationOutput'>
+		</div>
+		
+		<br>
+		<button type="button" class="ui button" id="submit">Submit</button>
+		</div>
+		</div>
+		</div>
+		</div>
+		<br>
+
+	</body>
+	
+	<script>
+		
+		populateDropdown("species");
+		populateDropdown("gender");
+		populateDropdown("age");
+		
+		
+		var photoArrayIndex=0
+		var photoArray=[];		
+		
+		$.get("http://localhost/mammalwebDemo/photoImages.php", 
+			function(data){
+				photoArray=JSON.parse(data);
+				document.getElementById("imageDiv").innerHTML=photoArray[photoArrayIndex][0]+"<br>"+photoArray[photoArrayIndex][1];
+			}
+		)
+		
+		function nextPhoto(){
+			photoArrayIndex+=1;
+			document.getElementById("imageDiv").innerHTML=photoArray[photoArrayIndex][0]+"<br>"+photoArray[photoArrayIndex][1];
+		}
+		
+		$('#nextPhoto').click(nextPhoto);
+		
+		function populateDropdown(dropDownName){
+			getDataInput="request="+dropDownName;
+			
+			$.get("http://localhost/mammalwebDemo/formFill.php",getDataInput,function(response){
+					data=JSON.parse(response);
+					for(i=0; i<data.length; i++){
+						document.getElementById(dropDownName).insertAdjacentHTML('beforeend',"<option value='"+data[i].option_id+"'>"+data[i].option_name+"</option>");
+					}
+				}
+			);
+		}	
+		
+		var speciesId="";
+		var speciesName="";
+		$('#species').dropdown({
+			onChange: function(value,text){
+				speciesId=value;
+				speciesName=text;
+				}
+			}
+		);
+		
+		var genderId="";
+		var genderName="";
+		$('#gender').dropdown({
+			onChange: function(value,text){
+				genderId=value;
+				genderName=text;
+				}
+			}
+		);
+		
+		var ageId="";
+		var ageName="";
+		$('#age').dropdown({
+			onChange: function(value,text){
+				ageId=value;
+				ageName=text;
+				}
+			}
+		);
+		
+		var classificationArray={};
+		classificationArray['species']={};
+		classificationArray['gender']={};
+		classificationArray['age']={};
+		var divCount=0;
+		function addClassification(selectType){
+			var name = "";
+			var id = "";
+			if (selectType == "species"){
+				name = speciesName;
+				id = speciesId;
+			}
+			else if(selectType == "gender"){
+				name = genderName;
+				id = genderId;
+			}
+			else if(selectType == "age"){
+				name = ageName;
+				id = ageId;
+			}
+			//classificationOutput is the initially empty dive below the drop down menu.
+			//add a div below the drop down menu holding the current value of the drop down menu.
+			document.getElementById(selectType + "ClassificationOutput").insertAdjacentHTML('beforeend',"<div class='ui label' id='classificationNo"+divCount+"div'>\n"+
+			name+"\n"+
+			//add a delete icon to the new div
+			"<i class='delete icon' id='classificationNo"+divCount+"' onclick='deleteClassification(this)'></i>\n"+
+			"</div>\n"+
+			
+			//add a new line
+			"<br id='classificationNo"+divCount+"br'>\n");
+			classificationArray[selectType]["classificationNo"+divCount]=id;;
+			
+			divCount+=1;
+			console.log(classificationArray['species']);
+			console.log(classificationArray['gender']);
+			console.log(classificationArray['age']);
+		}
+		
+		//on click of the delete cross, remove both the div with the selected species name in it
+		//and the line break, and the entry from the array.
+		function deleteClassification(element){
+			var id = element.id;
+			$('#'+id+'div').remove();
+			$('#'+id+'br').remove();
+			//although the id will only exist in one of these arrays, "delete" from all 3 since we do not
+			//know which array it is in.
+			delete classificationArray['species'][id];
+			delete classificationArray['gender'][id];
+			delete classificationArray['age'][id];
+			console.log(classificationArray['species']);
+			console.log(classificationArray['gender']);
+			console.log(classificationArray['age']);
+			
+		}
+		
+		$('#speciesAddClassifcication').click(function(){
+			addClassification("species");
+		});
+		$('#genderAddClassification').click(function(){
+			addClassification("gender");
+		});
+		$('#ageAddClassification').click(function(){
+			addClassification("age");
+		});
+		
+		$('#submit').click(function(){
+			var speciesCount = 0;
+			var genderCount = 0;
+			var ageCount = 0;
+			for (var key in classificationArray['species']){
+				if (classificationArray['species'].hasOwnProperty(key)){
+					speciesCount++;
+				}
+			}
+			for (var key in classificationArray['gender']){
+				if (classificationArray['gender'].hasOwnProperty(key)){
+					genderCount++;
+				}
+			}
+			for (var key in classificationArray['age']){
+				if (classificationArray['age'].hasOwnProperty(key)){
+					ageCount++;
+				}
+			}
+			console.log(speciesCount, genderCount, ageCount);
+			if (speciesCount != genderCount || speciesCount != ageCount){
+				alert("You need to put the same number of values into each box");
+				return;
+			}
+			else if(speciesCount == 0){
+				alert("The form needs a value in each box")
+				return;
+			}
+			else{
+				$confirm = confirm("Are you sure?");
+					//if OK is clicked:
+					if (confirm){
+						classificationArray['photo_id'] = photoArray[photoArrayIndex][0];
+						console.log(classificationArray['photo_id']);
+						$.get("scientistClassify.php", classificationArray, function(response){
+							console.log(response);
+						});
+						nextPhoto();
+					}
+			}
+		});
+			
+	</script>
+	
+</html>

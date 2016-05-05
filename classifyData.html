@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<!-- external libraries that we want, e.g. ajax-->
+	<head>
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.js"></script>	    
+	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.css"/>
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300italic,700' rel='stylesheet' type='text/css'>
+
+        <nav class="navbar navbar-inverse">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span> 
+              </button>
+              <a class="navbar-brand" href="home.html"><img src="MammalWeb.png" height="35" width="130"> </img></a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+              <ul class="nav navbar-nav">
+                <li><a href="home.html"><img src="home.png" height="35" width="70"> </img></a></li>
+                <li class="dropdown">
+                  <a href="SciDash.php" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="Scifilter.png" height="35" width="70"> </img> <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="index.html">Filter for Scientists</a></li>
+                    <li><a href="carouselfilter.html">Carousel Filter for Scientists</a></li>
+                    <li><a href="SciDash.php">Data Hub</a></li>
+                    <li><a href="fr4.html">Unresolved Classification</a></li>
+                    <li class="active"><a href="classifyData.html">Scientist Classification settings</a></li>
+                  </ul>
+                <li><a href="user.html"><img src="user.png" height="35" width="70"> </img></a></li> </a></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <br>
+
+	</head>
+
+<div style="font-family: 'Open Sans Condensed', serif;">
+	<p>
+	<br>
+		<center><font size="5">
+			Mammalweb algorithm classification page
+		</font></center>
+	<br>
+	</p>
+</div>
+	
+	<!-- div to output data to -->
+
+	<body style="background:Cornsilk;">
+
+<div style="font-family: 'Open Sans Condensed', serif;">
+    <div class="container">
+        <div class="row">
+        <div class="col-md-12" align="center">
+			<div id='classifyOut'>
+			</div>
+		
+			<!-- form for data input-->
+			<form id="inputForm">
+				Evenness:<br>
+				<div class="ui input">
+					<input type='text' name='evenness'> 
+				</div>
+				<br>
+				
+				Minimum no of votes:<br>
+				<div class="ui input">
+					<input type='text' name='minV'> <br>
+				</div>
+				<br>
+				
+				Maximum no of votes:<br>
+				<div class="ui input">
+					<input type='text' name='maxV'> <br>
+				</div>
+				<br>
+				
+				Number of photos in circulation:<br>
+				<div class="ui input">
+					<input type='text' name='circNum'> <br>
+				</div>
+				<br>
+				
+				Tick to classify all images in the database: <input type='checkbox' name='classifyAll' value='true'> <br>
+				
+				<div class="center aligned row"> <br>
+					<button type='button' class="ui button" id='runClassify'>Run classification</button> <br>
+
+				</div>
+			</form>
+		</div>
+	</div>
+	</div>
+	</div>
+	</body>
+	<!-- when runClassify button is press, a get request is sent to the classifyDatabase
+	script, with the values in the textboxes as the values in the get request-->
+	<script type="text/javascript">
+		function classifyData(){
+			document.getElementById("classifyOut").innerHTML="running classification..."
+			//the get request
+			$.get("http://localhost/mammalwebDemo/classifyDatabase.php",$("#inputForm").serialize(),
+				function(data){
+					//loads the response into the output div
+					document.getElementById("classifyOut").innerHTML=data;
+				}
+			)
+		}
+		//binds the function to the runClassify button
+		$('#runClassify').click(classifyData);
+	</script>
+</html>
